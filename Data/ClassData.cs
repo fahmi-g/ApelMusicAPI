@@ -1,0 +1,253 @@
+﻿using System.Reflection.Metadata.Ecma335;
+
+using ApelMusicAPI.Models;
+using MySql.Data.MySqlClient;
+
+
+namespace ApelMusicAPI.Data
+{
+    public class ClassData
+    {
+        private readonly IConfiguration _configuration;
+        private readonly string connectionString;
+
+        public ClassData(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            connectionString = _configuration.GetConnectionString("DefaultConnection");
+        }
+
+        //GetAll
+        public List<Class> GetClasses()
+        {
+            List<Class> classes = new List<Class>();
+
+            string query = "SELECT * FROM class";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                Class newClass = new Class
+                                {
+                                    classId = Convert.ToInt32(dataReader["class_id"]),
+                                    classCategory = Convert.ToInt32(dataReader["class_category"]),
+                                    classImg = dataReader["class_img"].ToString(),
+                                    className = dataReader["class_name"].ToString() ?? string.Empty,
+                                    classDescription = dataReader["class_description"].ToString(),
+                                    classPrice = Convert.ToInt32(dataReader["class_price"]),
+                                    classSchedule = Convert.ToDateTime(dataReader["class_schedule"]),
+                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty
+                                };
+
+                                classes.Add(newClass);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return classes;
+        }
+
+        //GetByID
+        public Class? GetById(int class_id)
+        {
+            Class? classById = null;
+            string query = $"SELECT * FROM class WHERE class_id = @class_id";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@class_id", class_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                Class newClass = new Class
+                                {
+                                    classId = Convert.ToInt32(dataReader["class_id"]),
+                                    classCategory = Convert.ToInt32(dataReader["class_category"]),
+                                    classImg = dataReader["class_img"].ToString(),
+                                    className = dataReader["class_name"].ToString() ?? string.Empty,
+                                    classDescription = dataReader["class_description"].ToString(),
+                                    classPrice = Convert.ToInt32(dataReader["class_price"]),
+                                    classSchedule = Convert.ToDateTime(dataReader["class_schedule"]),
+                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty
+                                };
+
+                                classById = newClass;
+                            }
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return classById;
+        }
+
+        //Insert/Post
+        public bool InsertNewClass(Class newClass)
+        {
+            bool result = false;
+
+            string classScheduleString = newClass.classSchedule.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string query = $"INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_schedule, class_status) " +
+                $"VALUES (@class_category, @class_img, @class_name, @class_description, @class_price, @class_schedule, @class_status)";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@class_category", newClass.classCategory);
+                    command.Parameters.AddWithValue("@class_img", newClass.classImg);
+                    command.Parameters.AddWithValue("@class_name", newClass.className);
+                    command.Parameters.AddWithValue("@class_description", newClass.classDescription);
+                    command.Parameters.AddWithValue("@class_price", newClass.classPrice);
+                    command.Parameters.AddWithValue("@class_schedule", classScheduleString);
+                    command.Parameters.AddWithValue("@class_status", newClass.classStatus);
+
+                    try
+                    {
+                        connection.Open();
+
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        //Update/Put
+        public bool UpdateClass(int class_id, Class newClass)
+        {
+            bool result = false;
+
+            string classScheduleString = newClass.classSchedule.ToString("yyyy-MM-dd HH:mm:ss");
+
+            string query = $"UPDATE class " +
+                $"SET class_category = @class_category, class_img = @class_img, class_name = @class_name, class_description = @class_description, class_price = @class_price, class_schedule = @class_schedule, class_status = @class_status " +
+                $"WHERE class_id = @class_id;";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@class_id", class_id);
+                    command.Parameters.AddWithValue("@class_category", newClass.classCategory);
+                    command.Parameters.AddWithValue("@class_img", newClass.classImg);
+                    command.Parameters.AddWithValue("@class_name", newClass.className);
+                    command.Parameters.AddWithValue("@class_description", newClass.classDescription);
+                    command.Parameters.AddWithValue("@class_price", newClass.classPrice);
+                    command.Parameters.AddWithValue("@class_schedule", classScheduleString);
+                    command.Parameters.AddWithValue("@class_status", newClass.classStatus);
+
+                    try
+                    {
+                        connection.Open();
+
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        //Delete
+        public bool DeleteById(int class_id)
+        {
+            bool result = false;
+
+            string query = "DELETE FROM class WHERE class_id = @class_id";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@class_id", class_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+                return result;
+        }
+    }
+}
