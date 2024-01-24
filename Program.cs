@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 
 //
 builder.Services.AddScoped<ClassData>();
+builder.Services.AddScoped<ClassCategoryData>();
 
 builder.Services.AddCors();
 //
