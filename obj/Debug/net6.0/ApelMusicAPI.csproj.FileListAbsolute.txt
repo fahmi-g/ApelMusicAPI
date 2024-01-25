@@ -35,3 +35,4 @@ D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\refint\ApelMusicAP
 D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ApelMusicAPI.pdb
 D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ApelMusicAPI.genruntimeconfig.cache
 D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ref\ApelMusicAPI.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ApelMusicAPI.sourcelink.json
