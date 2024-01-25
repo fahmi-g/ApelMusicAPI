@@ -1,3 +1,4 @@
+using ApelMusicAPI;
 using ApelMusicAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
