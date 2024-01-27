@@ -44,7 +44,6 @@ namespace ApelMusicAPI.Data
                                     className = dataReader["class_name"].ToString() ?? string.Empty,
                                     classDescription = dataReader["class_description"].ToString(),
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
-                                    classSchedule = Convert.ToDateTime(dataReader["class_schedule"]),
                                     classStatus = dataReader["class_status"].ToString() ?? string.Empty
                                 };
 
@@ -97,7 +96,6 @@ namespace ApelMusicAPI.Data
                                     className = dataReader["class_name"].ToString() ?? string.Empty,
                                     classDescription = dataReader["class_description"].ToString(),
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
-                                    classSchedule = Convert.ToDateTime(dataReader["class_schedule"]),
                                     classStatus = dataReader["class_status"].ToString() ?? string.Empty
                                 };
 
@@ -124,10 +122,8 @@ namespace ApelMusicAPI.Data
         {
             bool result = false;
 
-            string classScheduleString = newClass.classSchedule.ToString("yyyy-MM-dd HH:mm:ss");
-
-            string query = $"INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_schedule, class_status) " +
-                $"VALUES (@class_category, @class_img, @class_name, @class_description, @class_price, @class_schedule, @class_status)";
+            string query = $"INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_status) " +
+                $"VALUES (@class_category, @class_img, @class_name, @class_description, @class_price, @class_status)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -142,7 +138,6 @@ namespace ApelMusicAPI.Data
                     command.Parameters.AddWithValue("@class_name", newClass.className);
                     command.Parameters.AddWithValue("@class_description", newClass.classDescription);
                     command.Parameters.AddWithValue("@class_price", newClass.classPrice);
-                    command.Parameters.AddWithValue("@class_schedule", classScheduleString);
                     command.Parameters.AddWithValue("@class_status", newClass.classStatus);
 
                     try
@@ -170,10 +165,8 @@ namespace ApelMusicAPI.Data
         {
             bool result = false;
 
-            string classScheduleString = newClass.classSchedule.ToString("yyyy-MM-dd HH:mm:ss");
-
             string query = $"UPDATE class " +
-                $"SET class_category = @class_category, class_img = @class_img, class_name = @class_name, class_description = @class_description, class_price = @class_price, class_schedule = @class_schedule, class_status = @class_status " +
+                $"SET class_category = @class_category, class_img = @class_img, class_name = @class_name, class_description = @class_description, class_price = @class_price, class_status = @class_status " +
                 $"WHERE class_id = @class_id;";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -190,7 +183,6 @@ namespace ApelMusicAPI.Data
                     command.Parameters.AddWithValue("@class_name", newClass.className);
                     command.Parameters.AddWithValue("@class_description", newClass.classDescription);
                     command.Parameters.AddWithValue("@class_price", newClass.classPrice);
-                    command.Parameters.AddWithValue("@class_schedule", classScheduleString);
                     command.Parameters.AddWithValue("@class_status", newClass.classStatus);
 
                     try

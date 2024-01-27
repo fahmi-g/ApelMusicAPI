@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using ApelMusicAPI.Data;
 using ApelMusicAPI.Models;
 using ApelMusicAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApelMusicAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin")]
     public class ClassController : ControllerBase
     {
 

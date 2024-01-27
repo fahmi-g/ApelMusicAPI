@@ -36,3 +36,12 @@ D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ApelMusicAPI.pdb
 D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ApelMusicAPI.genruntimeconfig.cache
 D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ref\ApelMusicAPI.dll
 D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\obj\Debug\net6.0\ApelMusicAPI.sourcelink.json
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\BCrypt.Net-Next.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\Coding ID_FS_14\ApelMusicAPI\ApelMusicAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
