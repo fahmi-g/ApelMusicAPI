@@ -9,6 +9,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.WebUtilities;
+using ApelMusicAPI.Email;
 
 namespace ApelMusicAPI.Controllers
 {
@@ -18,16 +20,18 @@ namespace ApelMusicAPI.Controllers
     {
         private readonly UserData userData;
         private readonly IConfiguration _configuration;
+        private readonly EmailService emailService;
 
-        public UserController(UserData userData, IConfiguration configuration)
+        public UserController(UserData userData, IConfiguration configuration, EmailService emailService)
         {
             this.userData = userData;
             _configuration = configuration;
+            this.emailService = emailService;
         }
 
 
         [HttpPost("CreateAccount")]
-        public IActionResult CreateAccount([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> CreateAccount([FromBody] UserDTO userDTO)
         {
             try
             {
@@ -43,6 +47,7 @@ namespace ApelMusicAPI.Controllers
 
                 if (result)
                 {
+                    bool sendEmailActivation = await SendEmailActivation(newUser);
                     return StatusCode(201, $"{userDTO.userName}, your account has been created.");
                 }
                 else
@@ -70,7 +75,7 @@ namespace ApelMusicAPI.Controllers
             if (user == null)
                 return Unauthorized("You do not authorized");
 
-            string? userRole = userData.GetRoleNameById(user.role);
+            string userRole = userData.GetRoleNameById(user.role);
 
             bool isVerified = BCrypt.Net.BCrypt.Verify(credential.userPassword, user?.userPassword);
             //bool isVerified = user?.Password == credential.Password;
@@ -108,5 +113,146 @@ namespace ApelMusicAPI.Controllers
                 return Ok(new LoginResponseDTO { token = token });
             }
         }
+
+
+        private async Task<bool> SendEmailActivation(User user)
+        {
+            if (user == null || string.IsNullOrEmpty(user.userEmail)) return false;
+
+            List<string> emailTo = new List<string>();
+            emailTo.Add(user.userEmail);
+
+            string subject = "Account Activation";
+
+            Dictionary<string, string?> param = new Dictionary<string, string?>
+            {
+                { "user_id", user.userId.ToString() },
+                { "user_name", user.userName }
+            };
+
+            string callbackUrl = QueryHelpers.AddQueryString("https://localhost:7293/api/User/ActivateUser", param);
+            EmailActivationModel emailActivationModel = new EmailActivationModel()
+            {
+                Email = user.userEmail,
+                Link = callbackUrl
+            };
+
+            string body = emailService.GetEmailTemplate(emailActivationModel);
+
+
+            EmailModel emailModel = new EmailModel(emailTo, subject, body);
+            bool mailResult = await emailService.SendEmailAsync(emailModel, new CancellationToken());
+
+            return mailResult;
+        }
+
+
+        [HttpGet("ActivateUser")]
+        public IActionResult ActivateUser(Guid user_id, string user_name)
+        {
+            try
+            {
+                User? user = userData.CheckUserAuth(user_name);
+
+                if (user == null)
+                    return BadRequest("Activation Failed");
+
+                if (user.isActivated == true)
+                    return BadRequest("User has been activated");
+
+                bool result = userData.ActivateUser(user_id);
+
+                if (result)
+                    return Ok("User activated");
+                else
+                    return StatusCode(500, "Activation Failed");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email)) return BadRequest("Email is empty");
+
+                bool sendMail = await SendEmailForgetPassword(email);
+
+                if (sendMail)
+                {
+                    return Ok("Mail sent");
+                }
+                else
+                {
+                    return StatusCode(500, "Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+
+        private async Task<bool> SendEmailForgetPassword(string email)
+        {
+            // send email
+            List<string> emailTo = new List<string>();
+            emailTo.Add(email);
+
+            string subject = "Forget Password";
+
+            Dictionary<string, string?> param = new Dictionary<string, string?>
+            {
+                {"email", email }
+            };
+
+            string callbackUrl = QueryHelpers.AddQueryString("", param);
+            EmailActivationModel emailActivationModel = new EmailActivationModel()
+            {
+                Email = email,
+                Link = callbackUrl
+            };
+            string body = emailService.GetEmailTemplate(emailActivationModel);
+
+            EmailModel emailModel = new EmailModel(emailTo, subject, body);
+            bool mailResult = await emailService.SendEmailAsync(emailModel, new CancellationToken());
+
+            return mailResult;
+        }
+
+        [HttpPost("ResetPassword")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordDTO resetPassword)
+        {
+            try
+            {
+                if (resetPassword == null) return BadRequest("No Data");
+
+                if (resetPassword.Password != resetPassword.ConfirmPassword)
+                {
+                    return BadRequest("Password doesn't match");
+                }
+
+                bool reset = userData.ResetPassword(resetPassword.Email, BCrypt.Net.BCrypt.HashPassword(resetPassword.Password));
+
+                if (reset)
+                {
+                    return Ok("Reset password OK");
+                }
+                else
+                {
+                    return StatusCode(500, "Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
     }
 }

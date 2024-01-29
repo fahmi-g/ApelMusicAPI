@@ -73,25 +73,34 @@ namespace ApelMusicAPI.Data
 
                     command.Parameters.AddWithValue("@user_name", userName);
 
-                    connection.Open();
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    try
                     {
-                        while (reader.Read())
+                        connection.Open();
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            user = new User
+                            while (reader.Read())
                             {
-                                userId = Guid.Parse(reader["user_id"].ToString() ?? string.Empty),
-                                userEmail = reader["user_email"].ToString() ?? string.Empty,
-                                userName = reader["user_name"].ToString() ?? string.Empty,
-                                userPassword = reader["user_password"].ToString() ?? string.Empty,
-                                role = Convert.ToInt32(reader["role_id"])
-                            };
+                                user = new User
+                                {
+                                    userId = Guid.Parse(reader["user_id"].ToString() ?? string.Empty),
+                                    userEmail = reader["user_email"].ToString() ?? string.Empty,
+                                    userName = reader["user_name"].ToString() ?? string.Empty,
+                                    userPassword = reader["user_password"].ToString() ?? string.Empty,
+                                    role = Convert.ToInt32(reader["role_id"]),
+                                    isActivated = Convert.ToBoolean(reader["is_activated"])
+                                };
+                            }
                         }
                     }
-
-                    connection.Close();
-
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
             }
 
@@ -99,7 +108,7 @@ namespace ApelMusicAPI.Data
         }
 
         //GetByID
-        public string? GetRoleNameById(int role_id)
+        public string GetRoleNameById(int role_id)
         {
             string roleName = "";
             string query = "SELECT ur.role_name FROM user_roles ur " +
@@ -138,6 +147,79 @@ namespace ApelMusicAPI.Data
             }
 
             return roleName;
+        }
+
+        public bool ActivateUser(Guid user_id)
+        {
+            bool result = false;
+
+            string query = $"UPDATE apelmusic_user SET is_activated = 1 WHERE user_id = @user_id";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@user_id", user_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+                return result;
+        }
+
+        public bool ResetPassword(string user_email, string user_password)
+        {
+            bool result = false;
+
+            string query = $"UPDATE apelmusic_user SET user_password = @user_password WHERE user_email = @user_email";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@user_password", user_password);
+                    command.Parameters.AddWithValue("@user_email", user_email);
+
+                    try
+                    {
+                        connection.Open();
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

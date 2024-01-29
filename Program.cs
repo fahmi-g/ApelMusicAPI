@@ -1,4 +1,5 @@
 using ApelMusicAPI.Data;
+using ApelMusicAPI.Email;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -47,6 +48,8 @@ builder.Services.AddScoped<ClassData>();
 builder.Services.AddScoped<ClassCategoryData>();
 builder.Services.AddScoped<UserRolesData>();
 builder.Services.AddScoped<UserData>();
+builder.Services.AddScoped<CheckoutStateData>();
+builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddCors();
 
