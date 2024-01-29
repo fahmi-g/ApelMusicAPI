@@ -97,6 +97,5 @@ namespace ApelMusicAPI.Email
 
             return modifiedMailTemplate.Run(emailTemplateModel);
         }
-
     }
 }

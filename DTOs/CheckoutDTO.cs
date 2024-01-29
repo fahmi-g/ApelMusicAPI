@@ -4,6 +4,6 @@
     {
         public Guid orderBy { get; set; }
         public string paymentMethod { get; set; } = string.Empty;
-        public int[] selectedClasses { get; }
+        public int[] selectedClasses { get; set; }
     }
 }

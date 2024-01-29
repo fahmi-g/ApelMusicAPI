@@ -130,6 +130,43 @@ namespace ApelMusicAPI.Data
             return result;
         }
 
+        public bool ConfirmPaidSelectedClass(Guid user_id, int class_id)
+        {
+            bool result = false;
+
+            string query = $"UPDATE user_classes SET is_paid = TRUE " +
+                $"WHERE user_id = @user_id AND class_id = @class_id";
+
+            using(MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@user_id", user_id.ToString());
+                    command.Parameters.AddWithValue("@class_id", class_id);
+
+                    try
+                    {
+                        connection.Open();
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /*public bool CheckoutTransaction(Orders orders, OrderDetail orderDetail)
         {
             bool result = false;
