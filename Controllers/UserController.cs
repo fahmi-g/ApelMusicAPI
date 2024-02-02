@@ -61,16 +61,16 @@ namespace ApelMusicAPI.Controllers
             }
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginRequestDTO credential)
         {
             if (credential is null)
                 return BadRequest("Invalid client request");
 
-            if (string.IsNullOrEmpty(credential.userName) || string.IsNullOrEmpty(credential.userPassword))
+            if (string.IsNullOrEmpty(credential.userEmail) || string.IsNullOrEmpty(credential.userPassword))
                 return BadRequest("Invalid client request");
 
-            User? user = userData.CheckUserAuth(credential.userName);
+            User? user = userData.CheckUserAuth(credential.userEmail);
 
             if (user == null)
                 return Unauthorized("You do not authorized");
@@ -110,7 +110,7 @@ namespace ApelMusicAPI.Controllers
 
                 string token = tokenHandler.WriteToken(securityToken);
 
-                return Ok(new LoginResponseDTO { token = token });
+                return Ok(new LoginResponseDTO { userId = user.userId, token = token });
             }
         }
 

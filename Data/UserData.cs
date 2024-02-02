@@ -58,7 +58,7 @@ namespace ApelMusicAPI.Data
                 return result;
         }
 
-        public User? CheckUserAuth(string userName)
+        public User? CheckUserAuth(string userEmail)
         {
             User? user = null;
 
@@ -67,11 +67,11 @@ namespace ApelMusicAPI.Data
                 using (MySqlCommand command = new MySqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT * From apelmusic_user WHERE user_name = @user_name";
+                    command.CommandText = "SELECT * From apelmusic_user WHERE user_email = @user_email";
 
                     command.Parameters.Clear();
 
-                    command.Parameters.AddWithValue("@user_name", userName);
+                    command.Parameters.AddWithValue("@user_email", userEmail);
 
                     try
                     {

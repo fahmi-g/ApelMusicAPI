@@ -42,7 +42,7 @@ namespace ApelMusicAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Checkout")]
         public IActionResult Checkout([FromBody] CheckoutDTO checkoutDTO)
         {
             bool resultOrder = false, resultOrderDetail = false, checkPaidClasses = false;
