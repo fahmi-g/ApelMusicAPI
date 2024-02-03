@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ApelMusicAPI.Models;
 using ApelMusicAPI.DTOs;
 using ApelMusicAPI.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApelMusicAPI.Controllers
 {
@@ -43,6 +44,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPost("AddRole")]
+        [Authorize(Roles = "admin")]
         public IActionResult InsertNewRole([FromBody] UserRolesDTO userRolesDTO)
         {
             if (userRolesDTO == null) return BadRequest("Data should be inputed");
@@ -59,6 +61,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPut("UpdateRole")]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateRole(int role_id, [FromBody] UserRolesDTO userRolesDTO)
         {
             if (userRolesDTO == null) return BadRequest("Data should be inputed");
@@ -75,6 +78,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpDelete("DeleteRole")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteRole(int role_id)
         {
             bool result = userRolesData.DeleteById(role_id);
