@@ -22,7 +22,8 @@ namespace ApelMusicAPI.Data
         {
             List<Class> classes = new List<Class>();
 
-            string query = "SELECT * FROM class";
+            string query = "SELECT c.*, cc.category_name FROM class c " +
+                "JOIN class_category cc ON c.class_category = cc.category_id";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -44,7 +45,8 @@ namespace ApelMusicAPI.Data
                                     className = dataReader["class_name"].ToString() ?? string.Empty,
                                     classDescription = dataReader["class_description"].ToString(),
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
-                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty
+                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty,
+                                    categoryName = dataReader["category_name"].ToString() ?? string.Empty
                                 };
 
                                 classes.Add(newClass);
@@ -69,7 +71,9 @@ namespace ApelMusicAPI.Data
         public Class? GetById(int class_id)
         {
             Class? classById = null;
-            string query = $"SELECT * FROM class WHERE class_id = @class_id";
+            string query = $"SELECT c.*, cc.category_name FROM class c " +
+                "JOIN class_category cc ON c.class_category = cc.category_id "+
+                $"WHERE c.class_id = @class_id";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -77,6 +81,7 @@ namespace ApelMusicAPI.Data
                 {
                     command.Connection = connection;
                     command.Parameters.Clear();
+
                     command.CommandText = query;
                     command.Parameters.AddWithValue("@class_id", class_id);
 
@@ -96,7 +101,8 @@ namespace ApelMusicAPI.Data
                                     className = dataReader["class_name"].ToString() ?? string.Empty,
                                     classDescription = dataReader["class_description"].ToString(),
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
-                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty
+                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty,
+                                    categoryName = dataReader["category_name"].ToString() ?? string.Empty
                                 };
 
                                 classById = newClass;

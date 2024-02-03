@@ -45,7 +45,7 @@ namespace ApelMusicAPI.Controllers
         [HttpPost("Checkout")]
         public IActionResult Checkout([FromBody] CheckoutDTO checkoutDTO)
         {
-            bool resultOrder = false, resultOrderDetail = false, checkPaidClasses = false;
+            bool result = false;
             string invoiceNumber = "INV" + DateTime.Today.ToString("ddMMyyyyhmmss") + DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
 
             try
@@ -57,30 +57,13 @@ namespace ApelMusicAPI.Controllers
                     orderId = Guid.NewGuid(),
                     invoiceNo =  invoiceNumber,
                     orderBy = checkoutDTO.orderBy,
-                    paymentMethod = checkoutDTO.paymentMethod,
+                    paymentMethod = checkoutDTO.paymentMethod
                 };
-                resultOrder = checkoutStateData.AddToOrders(order);
-
-                foreach (int selectedClass in checkoutDTO.selectedClasses)
-                {
-                    OrderDetail orderDetail = new OrderDetail
-                    {
-                        invoiceNo = invoiceNumber,
-                        userClassId = selectedClass
-                    };
-                    resultOrderDetail = checkoutStateData.AddToOrderDetail(orderDetail);
-
-                    checkPaidClasses = checkoutStateData.ConfirmPaidSelectedClass(selectedClass);
-
-                    if (!resultOrderDetail || !checkPaidClasses)
-                    {
-                        return StatusCode(500, "Failed to checkout user class by id = " + selectedClass);
-                    }
-                }
+                result = checkoutStateData.CheckoutTransaction(order, checkoutDTO.selectedClasses);
 
                 
 
-                if (resultOrder && resultOrderDetail) return StatusCode(201, "Success");
+                if (result) return StatusCode(201, "Success");
                 else return StatusCode(500, "Error occur");
             }
             catch(Exception ex)

@@ -49,6 +49,8 @@ builder.Services.AddScoped<ClassCategoryData>();
 builder.Services.AddScoped<UserRolesData>();
 builder.Services.AddScoped<UserData>();
 builder.Services.AddScoped<CheckoutStateData>();
+builder.Services.AddScoped<OrderData>();
+builder.Services.AddScoped<OrderDetailData>();
 builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddCors();

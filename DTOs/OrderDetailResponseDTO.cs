@@ -6,6 +6,5 @@
         public string category {  get; set; } = string.Empty;
         public DateTime schedule {  get; set; }
         public int classPrice { get; set; }
-        public int totalPrice { get; set; }
     }
 }

@@ -8,5 +8,6 @@
         public Guid orderBy { get; set; }
         public string paymentMethod { get; set; } = string.Empty;
         public bool isPaid { get; set; }
+        public int totalPrice { get; set; }
     }
 }
