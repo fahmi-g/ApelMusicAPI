@@ -127,7 +127,7 @@ namespace ApelMusicAPI.Controllers
             Dictionary<string, string?> param = new Dictionary<string, string?>
             {
                 { "user_id", user.userId.ToString() },
-                { "user_name", user.userName }
+                { "user_email", user.userEmail }
             };
 
             string callbackUrl = QueryHelpers.AddQueryString("https://localhost:7293/api/User/ActivateUser", param);
@@ -148,11 +148,11 @@ namespace ApelMusicAPI.Controllers
 
 
         [HttpGet("ActivateUser")]
-        public IActionResult ActivateUser(Guid user_id, string user_name)
+        public IActionResult ActivateUser(Guid user_id, string user_email)
         {
             try
             {
-                User? user = userData.CheckUserAuth(user_name);
+                User? user = userData.CheckUserAuth(user_email);
 
                 if (user == null)
                     return BadRequest("Activation Failed");

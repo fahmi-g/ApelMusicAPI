@@ -66,15 +66,15 @@ namespace ApelMusicAPI.Controllers
                     OrderDetail orderDetail = new OrderDetail
                     {
                         invoiceNo = invoiceNumber,
-                        classId = selectedClass
+                        userClassId = selectedClass
                     };
                     resultOrderDetail = checkoutStateData.AddToOrderDetail(orderDetail);
 
-                    checkPaidClasses = checkoutStateData.ConfirmPaidSelectedClass(checkoutDTO.orderBy, selectedClass);
+                    checkPaidClasses = checkoutStateData.ConfirmPaidSelectedClass(selectedClass);
 
                     if (!resultOrderDetail || !checkPaidClasses)
                     {
-                        return StatusCode(500, "Failed to checkout class by id = " + selectedClass);
+                        return StatusCode(500, "Failed to checkout user class by id = " + selectedClass);
                     }
                 }
 

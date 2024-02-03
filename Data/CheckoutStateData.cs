@@ -97,8 +97,8 @@ namespace ApelMusicAPI.Data
         {
             bool result = false;
 
-            string query = $"INSERT INTO order_detail (invoice_no, class_id) " +
-                $"VALUES (@invoice_no, @class_id)";
+            string query = $"INSERT INTO order_detail (invoice_no, user_class_id) " +
+                $"VALUES (@invoice_no, @user_class_id)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -109,7 +109,7 @@ namespace ApelMusicAPI.Data
                     command.CommandText = query;
 
                     command.Parameters.AddWithValue("@invoice_no", orderDetail.invoiceNo);
-                    command.Parameters.AddWithValue("@class_id", orderDetail.classId);
+                    command.Parameters.AddWithValue("@user_class_id", orderDetail.userClassId);
 
                     try
                     {
@@ -130,12 +130,12 @@ namespace ApelMusicAPI.Data
             return result;
         }
 
-        public bool ConfirmPaidSelectedClass(Guid user_id, int class_id)
+        public bool ConfirmPaidSelectedClass(int user_class_id)
         {
             bool result = false;
 
             string query = $"UPDATE user_classes SET is_paid = TRUE " +
-                $"WHERE user_id = @user_id AND class_id = @class_id";
+                $"WHERE user_class_id = @user_class_id";
 
             using(MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -145,8 +145,7 @@ namespace ApelMusicAPI.Data
                     command.Parameters.Clear();
                     command.CommandText = query;
 
-                    command.Parameters.AddWithValue("@user_id", user_id.ToString());
-                    command.Parameters.AddWithValue("@class_id", class_id);
+                    command.Parameters.AddWithValue("@user_class_id", user_class_id);
 
                     try
                     {

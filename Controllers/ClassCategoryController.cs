@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ApelMusicAPI.Data;
 using ApelMusicAPI.Models;
 using ApelMusicAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApelMusicAPI.Controllers
 {
@@ -44,6 +45,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPost("AddCategory")]
+        [Authorize(Roles = "admin")]
         public IActionResult InsertNewCategory([FromBody] ClassCategoryDTO classCategoryDTO)
         {
             if (classCategoryDTO == null) return BadRequest("Data should be inputed");
@@ -61,6 +63,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPut("UpdateCategory")]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateCategory(int category_id, [FromBody] ClassCategoryDTO classCategoryDTO)
         {
             if (classCategoryDTO == null) return BadRequest("Data should be inputed");
@@ -78,6 +81,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpDelete("DeleteCategory")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteCategory(int category_id)
         {
             bool result = classCategoryData.DeleteById(category_id);

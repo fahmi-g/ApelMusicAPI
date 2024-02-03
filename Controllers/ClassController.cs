@@ -10,7 +10,6 @@ namespace ApelMusicAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
     public class ClassController : ControllerBase
     {
 
@@ -47,6 +46,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPost("AddClass")]
+        [Authorize(Roles = "admin")]
         public IActionResult InsertNewClass([FromBody] ClassDTO classDTO)
         {
             if (classDTO == null) return BadRequest("Data should be inputed");
@@ -68,6 +68,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPut("UpdateClass")]
+        [Authorize(Roles = "admin")]
         public IActionResult UpdateClass(int class_id, [FromBody] ClassDTO classDTO)
         {
             if (classDTO == null) return BadRequest("Data should be inputed");
@@ -89,6 +90,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpDelete("DeleteClass")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteClass(int class_id)
         {
             bool result = classData.DeleteById(class_id);
