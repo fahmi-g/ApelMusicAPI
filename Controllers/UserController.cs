@@ -84,7 +84,7 @@ namespace ApelMusicAPI.Controllers
 
             bool isActivated = userData.GetUserActivationCheck(credential.userEmail);
 
-            if (user != null && !isVerified && !isActivated)
+            if ((user != null && !isVerified) || !isActivated)
             {
                 return BadRequest("Incorrect Credential!");
             }
