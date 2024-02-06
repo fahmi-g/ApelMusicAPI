@@ -191,5 +191,4 @@ VALUES ("member");
 -- select c.*, cc.category_name from class c
 -- join class_category cc on c.class_category = cc.category_id;
 
-
 -- DROP DATABASE apelmusic;

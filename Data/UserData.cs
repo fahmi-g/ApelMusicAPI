@@ -58,6 +58,47 @@ namespace ApelMusicAPI.Data
                 return result;
         }
 
+        public string GetUserEmail(string user_email)
+        {
+            string userEmail = "";
+            string query = $"SELECT user_email FROM apelmusic_user where user_email = @user_email";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@user_email", user_email);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                userEmail = dataReader["user_email"].ToString();
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return userEmail;
+        }
+
         public User? CheckUserAuth(string userEmail)
         {
             User? user = null;

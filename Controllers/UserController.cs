@@ -35,6 +35,8 @@ namespace ApelMusicAPI.Controllers
         {
             try
             {
+                if (userDTO.userEmail == userData.GetUserEmail(userDTO.userEmail)) return Problem("The email is already used");
+
                 User newUser = new User
                 {
                     userId = Guid.NewGuid(),
