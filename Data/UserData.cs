@@ -99,6 +99,47 @@ namespace ApelMusicAPI.Data
             return userEmail;
         }
 
+        public bool GetUserActivationCheck(string user_email)
+        {
+            bool isActivated = false;
+            string query = $"SELECT is_activated FROM apelmusic_user where user_email = @user_email";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@user_email", user_email);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                isActivated = Convert.ToBoolean(dataReader["is_activated"]);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return isActivated;
+        }
+
         public User? CheckUserAuth(string userEmail)
         {
             User? user = null;

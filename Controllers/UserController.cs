@@ -82,9 +82,11 @@ namespace ApelMusicAPI.Controllers
             bool isVerified = BCrypt.Net.BCrypt.Verify(credential.userPassword, user?.userPassword);
             //bool isVerified = user?.Password == credential.Password;
 
-            if (user != null && !isVerified)
+            bool isActivated = userData.GetUserActivationCheck(credential.userEmail);
+
+            if (user != null && !isVerified && !isActivated)
             {
-                return BadRequest("Incorrect Password! Please check your password!");
+                return BadRequest("Incorrect Credential!");
             }
             else
             {
