@@ -10,5 +10,7 @@
         public int classPrice { get; set; }
         public string classStatus { get; set; } = string.Empty;
         public string categoryName { get; set; } = string.Empty;
+
+        public List<DateTime> classSchedules { get; set; }
     }
 }

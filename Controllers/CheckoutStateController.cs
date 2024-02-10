@@ -28,7 +28,7 @@ namespace ApelMusicAPI.Controllers
                 {
                     userId = userClassesDTO.userId,
                     classId = userClassesDTO.classId,
-                    classSchedule = DateTime.Now
+                    classSchedule = Convert.ToDateTime(userClassesDTO.classSchedule)
                 };
 
                 bool result = checkoutStateData.InsertToUserClass(newUserClass);

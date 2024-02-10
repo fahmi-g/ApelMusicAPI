@@ -45,8 +45,36 @@ namespace ApelMusicAPI.Controllers
             return StatusCode(200, classById);
         }
 
+        [HttpGet("GetUserClassesPaid")]
+        public IActionResult GetUserClassByUserIdPaid(Guid user_id)
+        {
+            try
+            {
+                List<UserClassesPaidUnpaidDTO> userClasses = classData.GetUserClassesByUserId(user_id, true);
+                return StatusCode(200, userClasses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("GetUserClassesUnPaid")]
+        public IActionResult GetUserClassByUserIdUnPaid(Guid user_id)
+        {
+            try
+            {
+                List<UserClassesPaidUnpaidDTO> userClasses = classData.GetUserClassesByUserId(user_id, false);
+                return StatusCode(200, userClasses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost("AddClass")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public IActionResult InsertNewClass([FromBody] ClassDTO classDTO)
         {
             if (classDTO == null) return BadRequest("Data should be inputed");
@@ -58,34 +86,37 @@ namespace ApelMusicAPI.Controllers
                 className = classDTO.className,
                 classDescription = classDTO.classDescription,
                 classPrice = classDTO.classPrice,
-                classStatus = classDTO.classStatus
+                classStatus = classDTO.classStatus,
+                classSchedules = classDTO.classSchedules
             };
 
             bool result = classData.InsertNewClass(newClass);
 
-            if (result) return StatusCode(200, newClass.className);
+            if (result) return StatusCode(201);
             else return StatusCode(500, "Error Occur");
         }
 
         [HttpPut("UpdateClass")]
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public IActionResult UpdateClass(int class_id, [FromBody] ClassDTO classDTO)
         {
             if (classDTO == null) return BadRequest("Data should be inputed");
 
             Class newClass = new Class
             {
+                classId = class_id,
                 classCategory = classDTO.classCategory,
                 classImg = classDTO.classImg,
                 className = classDTO.className,
                 classDescription = classDTO.classDescription,
                 classPrice = classDTO.classPrice,
-                classStatus = classDTO.classStatus
+                classStatus = classDTO.classStatus,
+                classSchedules = classDTO.classSchedules
             };
 
             bool result = classData.UpdateClass(class_id, newClass);
 
-            if (result) return StatusCode(200);
+            if (result) return StatusCode(201);
             else return StatusCode(500, "Error Occur");
         }
 

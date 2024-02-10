@@ -25,15 +25,21 @@ CREATE TABLE class_category(
 );
 
 CREATE TABLE class(
-	class_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	class_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	class_category SMALLINT UNSIGNED,
 	class_img VARCHAR(65530),
-	class_name VARCHAR(100),
+	class_name VARCHAR(100) UNIQUE,
 	class_description VARCHAR(255),
 	class_price INT,
-	class_status CHAR(8) DEFAULT 'active',
+	class_status VARCHAR(10) DEFAULT 'active',
 	
 	FOREIGN KEY (class_category) REFERENCES class_category(category_id)
+);
+
+CREATE TABLE class_schedules(
+	schedule_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	class_name VARCHAR(100),
+	class_schedule DATE DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -43,8 +49,8 @@ CREATE TABLE class(
 CREATE TABLE user_classes(
 	user_class_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_id VARCHAR(36),
-	class_id SMALLINT UNSIGNED,
-	class_schedule DATETIME DEFAULT CURRENT_TIMESTAMP,
+	class_id INT UNSIGNED,
+	class_schedule DATE,
 	is_paid BOOL DEFAULT FALSE,
 	
 	FOREIGN KEY (user_id) REFERENCES apelmusic_user(user_id),
@@ -75,6 +81,30 @@ CREATE TABLE order_detail(
 	FOREIGN KEY (user_class_id) REFERENCES user_classes(user_class_id)
 );
 
+INSERT INTO class_category (category_img, category_name)
+VALUES ("Rectangle 11", "Drum"),
+	("Rectangle 12-5", "Piano"),
+	("Rectangle 13-1", "Gitar"),
+	("Rectangle 13-1", "Bass"),
+	("Rectangle 14", "Biola"),
+	("Rectangle 15", "Menyanyi"),
+	("Rectangle 12-6", "FLute"),
+	("Rectangle 16-1", "Saxophone");
+
+INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_status)
+VALUES (1, "Rectangle 12-1", "Kursus Drummer Special Coach (Eno Netral)", "Kelas yang sangat mudah", 8500000, "active"),
+	(3, "Rectangle 12-2", "[Beginner] Guitar class for kids", "Kelas yang sangat mudah", 1600000, "active"),
+	(5, "Rectangle 12-3", "Biola Mid-Level Course", "Kelas yang sangat mudah", 3000000, "active"),
+	(1, "Rectangle 12-4", "Drummer for kids (Level Basic/1)", "Kelas yang sangat mudah", 2200000, "active"),
+	(2, "Rectangle 12-5", "Kursus Piano From Zero to Pro (Full Package)", "Kelas yang sangat mudah", 11650000, "active"),
+	(8, "Rectangle 12-6", "Expert Level Saxophone", "Kelas yang sangat mudah", 7350000, "active");
+
+INSERT INTO class_schedules (class_name, class_schedule)
+VALUES (@class_id, @class_schedule);
+
+INSERT INTO user_roles (role_name)
+VALUES ("member");
+
 -- ==================================== Class Data ====================================
 -- insert into class(class_category, class_img, class_name, class_description, class_price, class_status)
 -- values (@class_category, @class_img, @class_name, @class_description, @class_price, @class_status);
@@ -85,19 +115,6 @@ CREATE TABLE order_detail(
 
 -- delete from class where class_id = @class_id;
 
--- ==================================== ========== ====================================
-INSERT INTO class_category (category_img, category_name)
-VALUES ("Category Test Image", "Drum"),
-	("Category Test Image", "Bass"),
-	("Category Test Image", "Guitar");
-
-INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_status)
-VALUES (1, "Class Test Image", "Class Dummer 1", "Kelas yang sangat mudah", 1000000, "active"),
-	(3, "Class Test Image", "Class Guitar 1", "Kelas yang sangat mudah", 1000000, "active"),
-	(2, "Class Test Image", "Class Bass 1", "Kelas yang sangat mudah", 1000000, "active");
-
-INSERT INTO user_roles (role_name)
-VALUES ("member");
 -- ==================================== Class Category Data ====================================
 -- insert into class_category (category_img, category_name)
 -- values (@category_img, @category_name);
@@ -190,5 +207,18 @@ VALUES ("member");
 -- ==================================== Add all classes with category name ====================================
 -- select c.*, cc.category_name from class c
 -- join class_category cc on c.class_category = cc.category_id;
+
+-- ==================================== Delete class_schedules ====================================
+-- Delete from class_schedules where class_name = "string";
+
+-- select * from class_schedules
+-- where class_name = @class_name;
+
+-- ==================================== User Classes ====================================
+
+-- select uc.user_class_id, uc.class_schedule, c.*, cc.category_name from user_classes uc
+-- join class c on uc.class_id = c.class_id
+-- join class_category cc on c.class_category = cc.category_id
+-- where uc.is_paid = @is_paid and uc.user_id = @user_id and c.class_status = 'active';
 
 -- DROP DATABASE apelmusic;

@@ -33,7 +33,7 @@ namespace ApelMusicAPI.Data
                     command.CommandText = query;
                     command.Parameters.AddWithValue("@user_id", userClass.userId.ToString());
                     command.Parameters.AddWithValue("@class_id", userClass.classId);
-                    command.Parameters.AddWithValue("@class_schedule", userClass.classSchedule.ToString("yyyy-MM-dd HH:mm:ss"));
+                    command.Parameters.AddWithValue("@class_schedule", userClass.classSchedule.ToString("yyyy-MM-dd"));
 
                     try
                     { 
@@ -56,6 +56,11 @@ namespace ApelMusicAPI.Data
 
         public bool CheckoutTransaction(Orders order, int[] selectedClasses)
         {
+            bool createOrderResult = false;
+            bool createOrderDetailResult = false;
+            bool confirmPaymentResult = false;
+            bool totalPriceResult = false;
+
             string queryOrder = $"INSERT INTO orders (order_id, invoice_no, order_by, payment_method) " +
                 $"VALUES (@order_id, @invoice_no, @order_by, @payment_method)";
             string queryOrderDetail = $"INSERT INTO order_detail (invoice_no, user_class_id) " +
@@ -73,11 +78,6 @@ namespace ApelMusicAPI.Data
                 $"HAVING o.invoice_no = @invoice_no" +
                 $") " +
                 $"WHERE invoice_no = @invoice_no";
-
-            bool createOrderResult = false;
-            bool createOrderDetailResult = false;
-            bool confirmPaymentResult = false;
-            bool totalPriceResult = false;
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -123,10 +123,10 @@ namespace ApelMusicAPI.Data
 
                         transaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         if (transaction != null) transaction.Rollback();
-                        throw ex;
+                        throw;
                     }
                     finally
                     {
