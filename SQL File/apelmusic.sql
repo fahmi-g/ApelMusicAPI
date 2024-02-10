@@ -99,8 +99,30 @@ VALUES (1, "Rectangle 12-1", "Kursus Drummer Special Coach (Eno Netral)", "Kelas
 	(2, "Rectangle 12-5", "Kursus Piano From Zero to Pro (Full Package)", "Kelas yang sangat mudah", 11650000, "active"),
 	(8, "Rectangle 12-6", "Expert Level Saxophone", "Kelas yang sangat mudah", 7350000, "active");
 
-INSERT INTO class_schedules (class_name, class_schedule)
-VALUES (@class_id, @class_schedule);
+insert into class_schedules (class_name, class_schedule)
+values ("Kursus Drummer Special Coach (Eno Netral)", "2024-02-10"),
+	("Kursus Drummer Special Coach (Eno Netral)", "2024-02-02"),
+	("Kursus Drummer Special Coach (Eno Netral)", "2024-02-05"),
+	
+	("[Beginner] Guitar class for kids", "2024-02-01"),
+	("[Beginner] Guitar class for kids", "2024-02-02"),
+	("[Beginner] Guitar class for kids", "2024-02-03"),
+	("[Beginner] Guitar class for kids", "2024-02-04"),
+	
+	("Biola Mid-Level Course", "2024-02-09"),
+	("Biola Mid-Level Course", "2024-02-08"),
+	("Biola Mid-Level Course", "2024-02-07"),
+	
+	("Drummer for kids (Level Basic/1)", "2024-03-02"),
+	("Drummer for kids (Level Basic/1)", "2024-03-07"),
+	
+	("Kursus Piano From Zero to Pro (Full Package)", "2024-03-01"),
+	("Kursus Piano From Zero to Pro (Full Package)", "2024-03-02"),
+	("Kursus Piano From Zero to Pro (Full Package)", "2024-03-03"),
+	
+	("Expert Level Saxophone", "2024-03-04"),
+	("Expert Level Saxophone", "2024-03-05"),
+	("Expert Level Saxophone", "2024-03-06");
 
 INSERT INTO user_roles (role_name)
 VALUES ("member");
