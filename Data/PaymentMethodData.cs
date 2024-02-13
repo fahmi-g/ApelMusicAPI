@@ -155,7 +155,7 @@ namespace ApelMusicAPI.Data
             bool result = false;
 
             string query = $"UPDATE payment_methods " +
-                $"SET payment_name = @payment_name, payment_img = @payment_img " +
+                $"SET payment_name = @payment_name, payment_img = @payment_img, is_active = @is_active " +
                 $"WHERE payment_id = @payment_id";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))

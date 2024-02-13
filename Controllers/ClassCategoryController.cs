@@ -53,7 +53,9 @@ namespace ApelMusicAPI.Controllers
             ClassCategory newCategory = new ClassCategory
             {
                 categoryImg = classCategoryDTO.categoryImg,
-                categoryName = classCategoryDTO.categoryName
+                categoryName = classCategoryDTO.categoryName,
+                categoryDescription = classCategoryDTO.categoryDescription,
+                isActive = classCategoryDTO.isActive
             };
 
             bool result = classCategoryData.InsertNewCategory(newCategory);
@@ -71,7 +73,9 @@ namespace ApelMusicAPI.Controllers
             ClassCategory newCategory = new ClassCategory
             {
                 categoryImg = classCategoryDTO.categoryImg,
-                categoryName = classCategoryDTO.categoryName
+                categoryName = classCategoryDTO.categoryName,
+                categoryDescription = classCategoryDTO.categoryDescription,
+                isActive = classCategoryDTO.isActive
             };
 
             bool result = classCategoryData.UpdateCategory(category_id, newCategory);

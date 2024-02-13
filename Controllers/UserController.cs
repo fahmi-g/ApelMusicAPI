@@ -115,7 +115,7 @@ namespace ApelMusicAPI.Controllers
 
                 string token = tokenHandler.WriteToken(securityToken);
 
-                return Ok(new LoginResponseDTO { userId = user.userId, token = token });
+                return Ok(new LoginResponseDTO { userId = user.userId, token = token, role = userRole });
             }
         }
 

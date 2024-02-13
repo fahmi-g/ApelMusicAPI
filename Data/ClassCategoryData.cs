@@ -38,7 +38,9 @@ namespace ApelMusicAPI.Data
                                 {
                                     categoryId = Convert.ToInt32(dataReader["category_id"]),
                                     categoryImg = dataReader["category_img"].ToString(),
-                                    categoryName = dataReader["category_name"].ToString()
+                                    categoryName = dataReader["category_name"].ToString(),
+                                    categoryDescription = dataReader["category_description"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
                                 };
 
                                 categories.Add(category);
@@ -86,7 +88,9 @@ namespace ApelMusicAPI.Data
                                 {
                                     categoryId = Convert.ToInt32(dataReader["category_id"]),
                                     categoryImg = dataReader["category_img"].ToString(),
-                                    categoryName = dataReader["category_name"].ToString()
+                                    categoryName = dataReader["category_name"].ToString(),
+                                    categoryDescription = dataReader["category_description"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
                                 };
 
                                 categoryById = category;
@@ -112,7 +116,7 @@ namespace ApelMusicAPI.Data
         {
             bool result = false;
 
-            string query = $"INSERT INTO class_category (category_img, category_name) VALUES(@category_img, @category_name)";
+            string query = $"INSERT INTO class_category (category_img, category_name, category_description, is_active) VALUES(@category_img, @category_name, @category_description, @is_active)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -124,6 +128,8 @@ namespace ApelMusicAPI.Data
 
                     command.Parameters.AddWithValue("@category_img", newCategory.categoryImg);
                     command.Parameters.AddWithValue("@category_name", newCategory.categoryName);
+                    command.Parameters.AddWithValue("@category_description", newCategory.categoryDescription);
+                    command.Parameters.AddWithValue("@is_active", newCategory.isActive);
 
                     try
                     {
@@ -150,7 +156,7 @@ namespace ApelMusicAPI.Data
         {
             bool result = false;
 
-            string query = $"UPDATE class_category SET category_img = @category_img, category_name = @category_name WHERE category_id = @category_id";
+            string query = $"UPDATE class_category SET category_img = @category_img, category_name = @category_name, category_description = @category_description, is_active = @is_active WHERE category_id = @category_id";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -163,6 +169,8 @@ namespace ApelMusicAPI.Data
                     command.Parameters.AddWithValue("@category_id", category_id);
                     command.Parameters.AddWithValue("@category_img", newCategory.categoryImg);
                     command.Parameters.AddWithValue("@category_name", newCategory.categoryName);
+                    command.Parameters.AddWithValue("@category_description", newCategory.categoryDescription);
+                    command.Parameters.AddWithValue("@is_active", newCategory.isActive);
 
                     try
                     {

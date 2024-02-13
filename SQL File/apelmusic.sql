@@ -21,7 +21,9 @@ CREATE TABLE apelmusic_user(
 CREATE TABLE class_category(
 	category_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	category_img VARCHAR(65530),
-	category_name VARCHAR(25)
+	category_name VARCHAR(25),
+	category_description VARCHAR(2000),
+	is_active BOOL DEFAULT TRUE
 );
 
 CREATE TABLE class(
@@ -29,7 +31,7 @@ CREATE TABLE class(
 	class_category SMALLINT UNSIGNED,
 	class_img VARCHAR(65530),
 	class_name VARCHAR(100) UNIQUE,
-	class_description VARCHAR(255),
+	class_description VARCHAR(2000),
 	class_price INT,
 	class_status VARCHAR(10) DEFAULT 'active',
 	
@@ -88,15 +90,15 @@ CREATE TABLE payment_methods(
 	is_active BOOL DEFAULT TRUE
 );
 
-INSERT INTO class_category (category_img, category_name)
-VALUES ("Rectangle 11", "Drum"),
-	("Rectangle 12-5", "Piano"),
-	("Rectangle 13-1", "Gitar"),
-	("Rectangle 13-1", "Bass"),
-	("Rectangle 14", "Biola"),
-	("Rectangle 15", "Menyanyi"),
-	("Rectangle 12-6", "FLute"),
-	("Rectangle 16-1", "Saxophone");
+INSERT INTO class_category (category_img, category_name, category_description)
+VALUES ("Rectangle 11", "Drum", "Drum Category Desc"),
+	("Rectangle 12-5", "Piano", "Drum Category Desc"),
+	("Rectangle 13-1", "Gitar", "Gitar Category Desc"),
+	("Rectangle 13-1", "Bass", "Bass Category Desc"),
+	("Rectangle 14", "Biola", "Biola Category Desc"),
+	("Rectangle 15", "Menyanyi", "Menyanyi Category Desc"),
+	("Rectangle 12-6", "FLute", "Flute Category Desc"),
+	("Rectangle 16-1", "Saxophone", "Saxophone Category Desc");
 
 INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_status)
 VALUES (1, "Rectangle 12-1", "Kursus Drummer Special Coach (Eno Netral)", "Kelas yang sangat mudah", 8500000, "active"),
@@ -137,10 +139,6 @@ VALUES ("member");
 INSERT INTO payment_methods (payment_name, payment_img)
 VALUES ("DANA", "DANA.png"),
 	("OVO", "OVO.png");
-
-UPDATE payment_methods
-SET payment_name = @payment_name, payment_img = @payment_img
-WHERE payment_id = @payment_id;
 
 -- ==================================== Class Data ====================================
 -- insert into class(class_category, class_img, class_name, class_description, class_price, class_status)
