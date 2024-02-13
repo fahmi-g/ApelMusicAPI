@@ -88,9 +88,9 @@ namespace ApelMusicAPI.Email
             }
         }
 
-        public string GetEmailTemplate<T>(T emailTemplateModel)
+        public string GetEmailTemplate<T>(T emailTemplateModel, string emailTemplate)
         {
-            string mailTemplate = MailConstant.EmailTemplate;
+            string mailTemplate = emailTemplate;
 
             IRazorEngine razorEngine = new RazorEngine();
             IRazorEngineCompiledTemplate modifiedMailTemplate = razorEngine.Compile(mailTemplate);

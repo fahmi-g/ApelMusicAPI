@@ -11,6 +11,7 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.WebUtilities;
 using ApelMusicAPI.Email;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ApelMusicAPI.Controllers
 {
@@ -141,7 +142,7 @@ namespace ApelMusicAPI.Controllers
                 Link = callbackUrl
             };
 
-            string body = emailService.GetEmailTemplate(emailActivationModel);
+            string body = emailService.GetEmailTemplate(emailActivationModel, MailConstant.EmailTemplate);
 
 
             EmailModel emailModel = new EmailModel(emailTo, subject, body);
@@ -215,13 +216,22 @@ namespace ApelMusicAPI.Controllers
                 {"email", email }
             };
 
-            string callbackUrl = QueryHelpers.AddQueryString("", param);
+            string userEmail;
+            string callbackUrl;
+            if (param.TryGetValue("email", out userEmail))
+            {
+                callbackUrl = "http://localhost:5173/newPassword/" + userEmail;
+            }
+            else
+            {
+                callbackUrl = string.Empty;
+            }
             EmailActivationModel emailActivationModel = new EmailActivationModel()
             {
                 Email = email,
                 Link = callbackUrl
             };
-            string body = emailService.GetEmailTemplate(emailActivationModel);
+            string body = emailService.GetEmailTemplate(emailActivationModel, MailConstant.ForgotPasswordEmailTemplate);
 
             EmailModel emailModel = new EmailModel(emailTo, subject, body);
             bool mailResult = await emailService.SendEmailAsync(emailModel, new CancellationToken());

@@ -81,6 +81,12 @@ CREATE TABLE order_detail(
 	FOREIGN KEY (user_class_id) REFERENCES user_classes(user_class_id)
 );
 
+CREATE TABLE paymentMethods(
+	payment_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	payment_name VARCHAR(200),
+	payment_img VARCHAR(65530)
+);
+
 INSERT INTO class_category (category_img, category_name)
 VALUES ("Rectangle 11", "Drum"),
 	("Rectangle 12-5", "Piano"),
@@ -99,8 +105,8 @@ VALUES (1, "Rectangle 12-1", "Kursus Drummer Special Coach (Eno Netral)", "Kelas
 	(2, "Rectangle 12-5", "Kursus Piano From Zero to Pro (Full Package)", "Kelas yang sangat mudah", 11650000, "active"),
 	(8, "Rectangle 12-6", "Expert Level Saxophone", "Kelas yang sangat mudah", 7350000, "active");
 
-insert into class_schedules (class_name, class_schedule)
-values ("Kursus Drummer Special Coach (Eno Netral)", "2024-02-10"),
+INSERT INTO class_schedules (class_name, class_schedule)
+VALUES ("Kursus Drummer Special Coach (Eno Netral)", "2024-02-10"),
 	("Kursus Drummer Special Coach (Eno Netral)", "2024-02-02"),
 	("Kursus Drummer Special Coach (Eno Netral)", "2024-02-05"),
 	
