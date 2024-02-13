@@ -81,10 +81,11 @@ CREATE TABLE order_detail(
 	FOREIGN KEY (user_class_id) REFERENCES user_classes(user_class_id)
 );
 
-CREATE TABLE paymentMethods(
+CREATE TABLE payment_methods(
 	payment_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	payment_name VARCHAR(200),
-	payment_img VARCHAR(65530)
+	payment_img VARCHAR(65530),
+	is_active BOOL DEFAULT TRUE
 );
 
 INSERT INTO class_category (category_img, category_name)
@@ -132,6 +133,14 @@ VALUES ("Kursus Drummer Special Coach (Eno Netral)", "2024-02-10"),
 
 INSERT INTO user_roles (role_name)
 VALUES ("member");
+
+INSERT INTO payment_methods (payment_name, payment_img)
+VALUES ("DANA", "DANA.png"),
+	("OVO", "OVO.png");
+
+UPDATE payment_methods
+SET payment_name = @payment_name, payment_img = @payment_img
+WHERE payment_id = @payment_id;
 
 -- ==================================== Class Data ====================================
 -- insert into class(class_category, class_img, class_name, class_description, class_price, class_status)
