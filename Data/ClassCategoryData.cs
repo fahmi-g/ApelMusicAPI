@@ -20,7 +20,7 @@ namespace ApelMusicAPI.Data
         {
             List<ClassCategory> categories = new List<ClassCategory>();
 
-            string query = "SELECT * FROM class_category";
+            string query = "SELECT * FROM class_category WHERE is_active = TRUE";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -65,7 +65,7 @@ namespace ApelMusicAPI.Data
         public ClassCategory? GetById(int category_id)
         {
             ClassCategory? categoryById = null;
-            string query = $"SELECT * FROM class_category WHERE category_id = @category_id";
+            string query = $"SELECT * FROM class_category WHERE category_id = @category_id AND is_active = TRUE";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
