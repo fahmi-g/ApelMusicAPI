@@ -71,5 +71,41 @@ namespace ApelMusicAPI.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpPost("BuyNow")]
+        public IActionResult BuyNow([FromBody] BuyNowDTO buyNowDTO)
+        {
+            bool result = false;
+            string invoiceNumber = "INV" + DateTime.Today.ToString("ddMMyyyyhmmss") + DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+
+            try
+            {
+                if (buyNowDTO == null) return BadRequest("There is no order data");
+
+                UserClasses userClass = new UserClasses
+                {
+                    userId = buyNowDTO.userId,
+                    classId = buyNowDTO.classId,
+                    classSchedule = Convert.ToDateTime(buyNowDTO.classSchedule)
+                };
+                Orders order = new Orders
+                {
+                    orderId = Guid.NewGuid(),
+                    invoiceNo = invoiceNumber,
+                    orderBy = buyNowDTO.userId,
+                    paymentMethod = buyNowDTO.paymentMethod
+                };
+                result = checkoutStateData.BuyNowTransaction(userClass, order);
+
+
+
+                if (result) return StatusCode(201, "Success");
+                else return StatusCode(500, "Error occur");
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+        }
     }
 }
