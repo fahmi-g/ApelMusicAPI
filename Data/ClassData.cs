@@ -125,6 +125,63 @@ namespace ApelMusicAPI.Data
             return classById;
         }
 
+        //GetByCategoryId
+        public List<Class> GetClassesByCategoryId(int category_id)
+        {
+            List<Class> classesByCateogryId = new List<Class>();
+            string query = $"SELECT c.*, cc.category_name FROM class c " +
+                $"JOIN class_category cc ON c.class_category = cc.category_id " +
+                $"WHERE c.class_category = @category_id AND c.class_status = 'active'";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@category_id", category_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                Class newClass = new Class
+                                {
+                                    classId = Convert.ToInt32(dataReader["class_id"]),
+                                    classCategory = category_id,
+                                    classImg = dataReader["class_img"].ToString(),
+                                    className = dataReader["class_name"].ToString() ?? string.Empty,
+                                    classDescription = dataReader["class_description"].ToString(),
+                                    classPrice = Convert.ToInt32(dataReader["class_price"]),
+                                    classStatus = dataReader["class_status"].ToString() ?? string.Empty,
+                                    categoryName = dataReader["category_name"].ToString() ?? string.Empty,
+                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty)
+                                };
+
+                                classesByCateogryId.Add(newClass);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return classesByCateogryId;
+        }
+
         //GetUserClassesByUserID
         public List<UserClassesPaidUnpaidDTO> GetUserClassesByUserId(Guid user_id, bool is_paid)
         {

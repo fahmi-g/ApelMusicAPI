@@ -45,6 +45,16 @@ namespace ApelMusicAPI.Controllers
             return StatusCode(200, classById);
         }
 
+        [HttpGet("GetClassesByCategory")]
+        public IActionResult GetClassesByCategoryId(int category_id)
+        {
+            List<Class> classByCategoryId = classData.GetClassesByCategoryId(category_id);
+
+            if (classByCategoryId == null) return StatusCode(404, "Data Not Found");
+
+            return StatusCode(200, classByCategoryId);
+        }
+
         [HttpGet("GetUserClassesPaid")]
         public IActionResult GetUserClassByUserIdPaid(Guid user_id)
         {
