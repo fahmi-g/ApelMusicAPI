@@ -38,7 +38,53 @@ namespace ApelMusicAPI.Data
                                 { 
                                     paymentId = Convert.ToInt32(dataReader["payment_id"]),
                                     paymentName = dataReader["payment_name"].ToString(),
-                                    paymentImg = dataReader["payment_img"].ToString()
+                                    paymentImg = dataReader["payment_img"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
+                                };
+
+                                paymentMethods.Add(paymentMethod);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return paymentMethods;
+        }
+
+        //GetAll
+        public List<PaymentMethods> GetAllPaymentMethods()
+        {
+            List<PaymentMethods> paymentMethods = new List<PaymentMethods>();
+
+            string query = "SELECT * FROM payment_methods";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                PaymentMethods paymentMethod = new PaymentMethods
+                                {
+                                    paymentId = Convert.ToInt32(dataReader["payment_id"]),
+                                    paymentName = dataReader["payment_name"].ToString(),
+                                    paymentImg = dataReader["payment_img"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
                                 };
 
                                 paymentMethods.Add(paymentMethod);
@@ -88,7 +134,8 @@ namespace ApelMusicAPI.Data
                                 {
                                     paymentId = payment_id,
                                     paymentName = dataReader["payment_name"].ToString(),
-                                    paymentImg = dataReader["payment_img"].ToString()
+                                    paymentImg = dataReader["payment_img"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
                                 };
 
                                 paymentMethodById = paymentMethod;

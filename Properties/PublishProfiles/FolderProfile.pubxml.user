@@ -3,4 +3,9 @@
 https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Coding ID_FS_14\Builts\Backend-Built</_PublishTargetUrl>
+    <History>True|2024-02-13T15:15:03.3603964Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
 </Project>

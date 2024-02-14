@@ -32,6 +32,20 @@ namespace ApelMusicAPI.Controllers
             }
         }
 
+        [HttpGet("GetAllPaymentMethods")]
+        public IActionResult GetAllPaymentMethods()
+        {
+            try
+            {
+                List<PaymentMethods> paymentMethods = paymentMethodData.GetAllPaymentMethods();
+                return StatusCode(200, paymentMethods);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("GetPaymentMethod")]
         public IActionResult GetPaymentMethodById(int id)
         {
