@@ -61,7 +61,7 @@ namespace ApelMusicAPI.Data
         }
 
         //GetAll
-        public List<PaymentMethods> GetAllPaymentMethods()
+        public List<PaymentMethods> GetAllPaymentMethod()
         {
             List<PaymentMethods> paymentMethods = new List<PaymentMethods>();
 

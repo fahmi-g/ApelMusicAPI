@@ -32,12 +32,12 @@ namespace ApelMusicAPI.Controllers
             }
         }
 
-        [HttpGet("GetAllPaymentMethods")]
-        public IActionResult GetAllPaymentMethods()
+        [HttpGet("GetAllPaymentMethod")]
+        public IActionResult GetAllPaymentMethod()
         {
             try
             {
-                List<PaymentMethods> paymentMethods = paymentMethodData.GetAllPaymentMethods();
+                List<PaymentMethods> paymentMethods = paymentMethodData.GetAllPaymentMethod();
                 return StatusCode(200, paymentMethods);
             }
             catch (Exception ex)
