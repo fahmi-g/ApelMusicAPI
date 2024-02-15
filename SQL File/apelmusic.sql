@@ -33,7 +33,7 @@ CREATE TABLE class(
 	class_name VARCHAR(100) UNIQUE,
 	class_description VARCHAR(2000),
 	class_price INT,
-	class_status VARCHAR(10) DEFAULT 'active',
+	is_active BOOL DEFAULT TRUE,
 	
 	FOREIGN KEY (class_category) REFERENCES class_category(category_id)
 );
@@ -101,13 +101,13 @@ VALUES ("Rectangle 11", "Drum", "Drum Category Desc"),
 	("Rectangle 12-6", "FLute", "Flute Category Desc"),
 	("Rectangle 16-1", "Saxophone", "Saxophone Category Desc");
 
-INSERT INTO class(class_category, class_img, class_name, class_description, class_price, class_status)
-VALUES (1, "Rectangle 12-1", "Kursus Drummer Special Coach (Eno Netral)", "Kelas yang sangat mudah", 8500000, "active"),
-	(3, "Rectangle 12-2", "[Beginner] Guitar class for kids", "Kelas yang sangat mudah", 1600000, "active"),
-	(5, "Rectangle 12-3", "Biola Mid-Level Course", "Kelas yang sangat mudah", 3000000, "active"),
-	(1, "Rectangle 12-4", "Drummer for kids (Level Basic/1)", "Kelas yang sangat mudah", 2200000, "active"),
-	(2, "Rectangle 12-5", "Kursus Piano From Zero to Pro (Full Package)", "Kelas yang sangat mudah", 11650000, "active"),
-	(8, "Rectangle 12-6", "Expert Level Saxophone", "Kelas yang sangat mudah", 7350000, "active");
+INSERT INTO class(class_category, class_img, class_name, class_description, class_price, is_active)
+VALUES (1, "Rectangle 12-1", "Kursus Drummer Special Coach (Eno Netral)", "Kelas yang sangat mudah", 8500000, TRUE),
+	(3, "Rectangle 12-2", "[Beginner] Guitar class for kids", "Kelas yang sangat mudah", 1600000, TRUE),
+	(5, "Rectangle 12-3", "Biola Mid-Level Course", "Kelas yang sangat mudah", 3000000, TRUE),
+	(1, "Rectangle 12-4", "Drummer for kids (Level Basic/1)", "Kelas yang sangat mudah", 2200000, TRUE),
+	(2, "Rectangle 12-5", "Kursus Piano From Zero to Pro (Full Package)", "Kelas yang sangat mudah", 11650000, TRUE),
+	(8, "Rectangle 12-6", "Expert Level Saxophone", "Kelas yang sangat mudah", 7350000, TRUE);
 
 INSERT INTO class_schedules (class_name, class_schedule)
 VALUES ("Kursus Drummer Special Coach (Eno Netral)", "2024-02-10"),
@@ -255,5 +255,7 @@ VALUES ("DANA", "DANA.png"),
 -- join class c on uc.class_id = c.class_id
 -- join class_category cc on c.class_category = cc.category_id
 -- where uc.is_paid = @is_paid and uc.user_id = @user_id and c.class_status = 'active';
+
+
 
 -- DROP DATABASE apelmusic;

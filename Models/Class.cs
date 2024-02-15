@@ -8,7 +8,7 @@
         public string className { get; set; } = string.Empty;
         public string? classDescription { get; set; }
         public int classPrice { get; set; }
-        public string classStatus { get; set; } = string.Empty;
+        public bool isActive { get; set; }
         public string categoryName { get; set; } = string.Empty;
 
         public List<ClassSchedules> classSchedules { get; set; }

@@ -9,7 +9,7 @@ namespace ApelMusicAPI.DTOs
         public string className { get; set; } = string.Empty;
         public string? classDescription { get; set; }
         public int classPrice { get; set; }
-        public string classStatus { get; set; } = string.Empty;
+        public bool isActive { get; set; }
 
         public List<DateTime> classSchedules { get; set; }
     }
