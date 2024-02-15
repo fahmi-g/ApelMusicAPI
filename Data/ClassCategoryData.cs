@@ -61,6 +61,52 @@ namespace ApelMusicAPI.Data
             return categories;
         }
 
+        //GetAll
+        public List<ClassCategory> GetAllCategory()
+        {
+            List<ClassCategory> categories = new List<ClassCategory>();
+
+            string query = "SELECT * FROM class_category";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                ClassCategory category = new ClassCategory
+                                {
+                                    categoryId = Convert.ToInt32(dataReader["category_id"]),
+                                    categoryImg = dataReader["category_img"].ToString(),
+                                    categoryName = dataReader["category_name"].ToString(),
+                                    categoryDescription = dataReader["category_description"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
+                                };
+
+                                categories.Add(category);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return categories;
+        }
+
         //GetByID
         public ClassCategory? GetById(int category_id)
         {

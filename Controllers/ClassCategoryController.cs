@@ -34,6 +34,20 @@ namespace ApelMusicAPI.Controllers
             }
         }
 
+        [HttpGet("GetAllCategory")]
+        public IActionResult GetAllCategory()
+        {
+            try
+            {
+                List<ClassCategory> categories = classCategoryData.GetAllCategory();
+                return StatusCode(200, categories);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("GetCategory")]
         public IActionResult GetCategoryById(int category_id)
         {
