@@ -107,6 +107,16 @@ namespace ApelMusicAPI.Controllers
             else return StatusCode(500, "Error Occur");
         }
 
+        [HttpDelete("DeleteClassFromCart")]
+        //[Authorize(Roles = "admin")]
+        public IActionResult DeleteUserClass(int user_class_id)
+        {
+            bool result = classData.DeleteUserClassById(user_class_id);
+
+            if (result) return StatusCode(200);
+            else return StatusCode(500, "Error Occur");
+        }
+
         [HttpDelete("DeleteClass")]
         [Authorize(Roles = "admin")]
         public IActionResult DeleteClass(int class_id)

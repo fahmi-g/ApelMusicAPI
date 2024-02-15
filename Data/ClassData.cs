@@ -422,6 +422,43 @@ namespace ApelMusicAPI.Data
         }
 
         //Delete
+        public bool DeleteUserClassById(int user_class_id)
+        {
+            bool result = false;
+
+            string query = "DELETE FROM user_classes WHERE user_class_id = @user_class_id AND is_paid = FALSE";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+
+                    command.Parameters.AddWithValue("@user_class_id", user_class_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        result = command.ExecuteNonQuery() > 0 ? true : false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        //Delete
         public bool DeleteById(int class_id)
         {
             bool result = false;
