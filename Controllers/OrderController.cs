@@ -31,5 +31,19 @@ namespace ApelMusicAPI.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpGet("GetAllOrders")]
+        public IActionResult GetAllOrders()
+        {
+            try
+            {
+                List<OrderResponseDTO> orders = orderData.GetAllOrders();
+                return StatusCode(200, orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }
