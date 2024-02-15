@@ -244,7 +244,11 @@ namespace ApelMusicAPI.Data
         public List<DateTime> GetClassSchedules(string class_name)
         {
             List<DateTime> classSchedules = new List<DateTime>();
-            string query = $"SELECT * FROM class_schedules WHERE class_name = @class_name";
+            string query = $"SELECT * FROM class_schedules " +
+                $"WHERE class_name = @class_name " +
+                $"AND schedule_id NOT IN (SELECT schedule_id FROM class_schedules " +
+                $"WHERE class_name IN (SELECT c.class_name FROM user_classes uc JOIN class c ON uc.class_id = c.class_id WHERE is_paid = TRUE) " +
+                $"AND class_schedule IN (SELECT class_schedule FROM user_classes WHERE is_paid = TRUE))";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {

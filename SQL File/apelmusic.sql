@@ -41,9 +41,8 @@ CREATE TABLE class(
 CREATE TABLE class_schedules(
 	schedule_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	class_name VARCHAR(100),
-	class_schedule DATE DEFAULT CURRENT_TIMESTAMP
+	class_schedule DATETIME
 );
-
 
 
 
@@ -52,7 +51,7 @@ CREATE TABLE user_classes(
 	user_class_id INT PRIMARY KEY AUTO_INCREMENT,
 	user_id VARCHAR(36),
 	class_id INT UNSIGNED,
-	class_schedule DATE,
+	class_schedule DATETIME,
 	is_paid BOOL DEFAULT FALSE,
 	
 	FOREIGN KEY (user_id) REFERENCES apelmusic_user(user_id),
@@ -247,7 +246,8 @@ VALUES ("DANA", "DANA.png"),
 -- Delete from class_schedules where class_name = "string";
 
 -- select * from class_schedules
--- where class_name = @class_name;
+-- where class_name = @class_name AND class_schedule NOT IN (SELECT class_schedule FROM user_classes WHERE is_paid = TRUE);
+
 
 -- ==================================== User Classes ====================================
 
