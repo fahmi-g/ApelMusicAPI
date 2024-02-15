@@ -241,14 +241,10 @@ namespace ApelMusicAPI.Data
         }
 
         //GetClassSchedules
-        public List<DateTime> GetClassSchedules(string class_name)
+        public List<ClassSchedules> GetClassSchedules(string class_name)
         {
-            List<DateTime> classSchedules = new List<DateTime>();
-            string query = $"SELECT * FROM class_schedules " +
-                $"WHERE class_name = @class_name " +
-                $"AND schedule_id NOT IN (SELECT schedule_id FROM class_schedules " +
-                $"WHERE class_name IN (SELECT c.class_name FROM user_classes uc JOIN class c ON uc.class_id = c.class_id WHERE is_paid = TRUE) " +
-                $"AND class_schedule IN (SELECT class_schedule FROM user_classes WHERE is_paid = TRUE))";
+            List<ClassSchedules> classSchedules = new List<ClassSchedules>();
+            string query = $"SELECT * FROM class_schedules WHERE class_name = @class_name AND schedule_id NOT IN (SELECT schedule_id FROM user_classes)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -268,7 +264,13 @@ namespace ApelMusicAPI.Data
                         {
                             while (dataReader.Read())
                             {
-                                classSchedules.Add(Convert.ToDateTime(dataReader["class_schedule"]));
+                                ClassSchedules classSchedule = new ClassSchedules
+                                {
+                                    scheduleId = Convert.ToInt32(dataReader["schedule_id"]),
+                                    classSchedule = Convert.ToDateTime(dataReader["class_schedule"])
+                                };
+
+                                classSchedules.Add(classSchedule);
                             }
                         }
                     }
@@ -287,7 +289,7 @@ namespace ApelMusicAPI.Data
         }
 
         //Insert/Post
-        public bool InsertNewClass(Class newClass)
+        public bool InsertNewClass(ClassDTO newClass)
         {
             bool result = false;
             bool classSchedulesResult = false;
@@ -349,7 +351,7 @@ namespace ApelMusicAPI.Data
         }
 
         //Update/Put
-        public bool UpdateClass(int class_id, Class newClass)
+        public bool UpdateClass(int class_id, ClassDTO newClass)
         {
             bool result = false;
             bool classSchedulesResult = false;

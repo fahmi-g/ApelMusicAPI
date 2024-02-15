@@ -89,18 +89,7 @@ namespace ApelMusicAPI.Controllers
         {
             if (classDTO == null) return BadRequest("Data should be inputed");
 
-            Class newClass = new Class
-            {
-                classCategory = classDTO.classCategory,
-                classImg = classDTO.classImg,
-                className = classDTO.className,
-                classDescription = classDTO.classDescription,
-                classPrice = classDTO.classPrice,
-                classStatus = classDTO.classStatus,
-                classSchedules = classDTO.classSchedules
-            };
-
-            bool result = classData.InsertNewClass(newClass);
+            bool result = classData.InsertNewClass(classDTO);
 
             if (result) return StatusCode(201);
             else return StatusCode(500, "Error Occur");
@@ -112,19 +101,7 @@ namespace ApelMusicAPI.Controllers
         {
             if (classDTO == null) return BadRequest("Data should be inputed");
 
-            Class newClass = new Class
-            {
-                classId = class_id,
-                classCategory = classDTO.classCategory,
-                classImg = classDTO.classImg,
-                className = classDTO.className,
-                classDescription = classDTO.classDescription,
-                classPrice = classDTO.classPrice,
-                classStatus = classDTO.classStatus,
-                classSchedules = classDTO.classSchedules
-            };
-
-            bool result = classData.UpdateClass(class_id, newClass);
+            bool result = classData.UpdateClass(class_id, classDTO);
 
             if (result) return StatusCode(201);
             else return StatusCode(500, "Error Occur");

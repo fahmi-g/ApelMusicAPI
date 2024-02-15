@@ -1,4 +1,6 @@
-﻿namespace ApelMusicAPI.DTOs
+﻿using ApelMusicAPI.Models;
+
+namespace ApelMusicAPI.DTOs
 {
     public class ClassDTO
     {

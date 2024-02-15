@@ -28,6 +28,7 @@ namespace ApelMusicAPI.Controllers
                 {
                     userId = userClassesDTO.userId,
                     classId = userClassesDTO.classId,
+                    scheduleId = userClassesDTO.scheduleId,
                     classSchedule = Convert.ToDateTime(userClassesDTO.classSchedule)
                 };
 
@@ -86,6 +87,7 @@ namespace ApelMusicAPI.Controllers
                 {
                     userId = buyNowDTO.userId,
                     classId = buyNowDTO.classId,
+                    scheduleId = buyNowDTO.scheduleId,
                     classSchedule = Convert.ToDateTime(buyNowDTO.classSchedule)
                 };
                 Orders order = new Orders

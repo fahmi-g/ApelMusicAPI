@@ -20,8 +20,8 @@ namespace ApelMusicAPI.Data
         {
             bool result = false;
 
-            string query = $"INSERT INTO user_classes (user_id, class_id, class_schedule, is_paid) " +
-                $"VALUES (@user_id, @class_id, @class_schedule, FALSE)";
+            string query = $"INSERT INTO user_classes (user_id, class_id, schedule_id, class_schedule, is_paid) " +
+                $"VALUES (@user_id, @class_id, @schedule_id, @class_schedule, FALSE)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -33,6 +33,7 @@ namespace ApelMusicAPI.Data
                     command.CommandText = query;
                     command.Parameters.AddWithValue("@user_id", userClass.userId.ToString());
                     command.Parameters.AddWithValue("@class_id", userClass.classId);
+                    command.Parameters.AddWithValue("@schedule_id", userClass.scheduleId);
                     command.Parameters.AddWithValue("@class_schedule", userClass.classSchedule.ToString("yyyy-MM-dd"));
 
                     try
@@ -149,8 +150,8 @@ namespace ApelMusicAPI.Data
             bool confirmPaymentResult = false;
             bool totalPriceResult = false;
 
-            string queryAddToCart = $"INSERT INTO user_classes (user_id, class_id, class_schedule, is_paid) " +
-                $"VALUES (@user_id, @class_id, @class_schedule, FALSE)";
+            string queryAddToCart = $"INSERT INTO user_classes (user_id, class_id, schedule_id, class_schedule, is_paid) " +
+                $"VALUES (@user_id, @class_id, @schedule_id, @class_schedule, FALSE)";
             string queryGetCurrentUserClassId = $"SELECT LAST_INSERT_ID() AS 'user_class_id'";
             string queryOrder = $"INSERT INTO orders (order_id, invoice_no, order_by, payment_method) " +
                 $"VALUES (@order_id, @invoice_no, @order_by, @payment_method)";
@@ -188,6 +189,7 @@ namespace ApelMusicAPI.Data
                         command.CommandText = queryAddToCart;
                         command.Parameters.AddWithValue("@user_id", userClass.userId.ToString());
                         command.Parameters.AddWithValue("@class_id", userClass.classId);
+                        command.Parameters.AddWithValue("@schedule_id", userClass.scheduleId);
                         command.Parameters.AddWithValue("@class_schedule", userClass.classSchedule.ToString("yyyy-MM-dd"));
                         addToCartResult = command.ExecuteNonQuery() > 0;
 

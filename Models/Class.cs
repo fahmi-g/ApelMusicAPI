@@ -11,6 +11,6 @@
         public string classStatus { get; set; } = string.Empty;
         public string categoryName { get; set; } = string.Empty;
 
-        public List<DateTime> classSchedules { get; set; }
+        public List<ClassSchedules> classSchedules { get; set; }
     }
 }
