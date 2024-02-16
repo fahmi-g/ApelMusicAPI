@@ -52,7 +52,7 @@ CREATE TABLE user_classes(
 	user_id VARCHAR(36),
 	class_id INT UNSIGNED,
 	schedule_id INT UNSIGNED,
-	class_schedule DATETIME,
+	class_schedule DATETIME NOT NULL,
 	is_paid BOOL DEFAULT FALSE,
 	
 	FOREIGN KEY (user_id) REFERENCES apelmusic_user(user_id),
