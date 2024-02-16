@@ -135,7 +135,7 @@ namespace ApelMusicAPI.Controllers
                 { "user_email", user.userEmail }
             };
 
-            string callbackUrl = QueryHelpers.AddQueryString("https://localhost:2026/api/User/ActivateUser", param);
+            string callbackUrl = QueryHelpers.AddQueryString("https://52.237.194.35:2026/api/User/ActivateUser", param);
             EmailActivationModel emailActivationModel = new EmailActivationModel()
             {
                 Email = user.userEmail,
@@ -220,7 +220,7 @@ namespace ApelMusicAPI.Controllers
             string callbackUrl;
             if (param.TryGetValue("email", out userEmail))
             {
-                callbackUrl = "http://localhost:2025/newPassword/" + userEmail;
+                callbackUrl = "http://52.237.194.35:2025/newPassword/" + userEmail;
             }
             else
             {
