@@ -56,6 +56,16 @@ namespace ApelMusicAPI.Controllers
             return StatusCode(200, paymentMethod);
         }
 
+        [HttpGet("GetActiveInactivePaymentMethod")]
+        public IActionResult GetActiveInactivePaymentMethodById(int id)
+        {
+            PaymentMethods? paymentMethod = paymentMethodData.GetActiveInactivePaymentMethodById(id);
+
+            if (paymentMethod == null) return StatusCode(404, "Data Not Found");
+
+            return StatusCode(200, paymentMethod);
+        }
+
         [HttpPost("AddPaymentMethod")]
         public IActionResult InsertNewCategory([FromBody] PaymentMethodsDTO paymentMethodsDTO)
         {

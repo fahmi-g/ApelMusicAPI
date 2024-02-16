@@ -156,6 +156,57 @@ namespace ApelMusicAPI.Data
             return paymentMethodById;
         }
 
+        //GetByID
+        public PaymentMethods? GetActiveInactivePaymentMethodById(int payment_id)
+        {
+            PaymentMethods? paymentMethodById = null;
+            string query = $"SELECT * FROM payment_methods " +
+                $"WHERE payment_id = @payment_id";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@payment_id", payment_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                PaymentMethods paymentMethod = new PaymentMethods
+                                {
+                                    paymentId = payment_id,
+                                    paymentName = dataReader["payment_name"].ToString(),
+                                    paymentImg = dataReader["payment_img"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
+                                };
+
+                                paymentMethodById = paymentMethod;
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return paymentMethodById;
+        }
+
         //Insert/Post
         public bool InsertNewPaymentMethod(PaymentMethods newPaymentMethod)
         {
