@@ -58,6 +58,16 @@ namespace ApelMusicAPI.Controllers
             return StatusCode(200, categoryById);
         }
 
+        [HttpGet("GetActiveInactiveCategory")]
+        public IActionResult GetActiveInactiveCategoryById(int category_id)
+        {
+            ClassCategory? categoryById = classCategoryData.GetActiveInactiveCategoryById(category_id);
+
+            if (categoryById == null) return StatusCode(404, "Data Not Found");
+
+            return StatusCode(200, categoryById);
+        }
+
         [HttpPost("AddCategory")]
         [Authorize(Roles = "admin")]
         public IActionResult InsertNewCategory([FromBody] ClassCategoryDTO classCategoryDTO)
@@ -98,7 +108,7 @@ namespace ApelMusicAPI.Controllers
             else return StatusCode(500, "Error Occur");
         }
 
-        [HttpDelete("DeleteCategory")]
+        /*[HttpDelete("DeleteCategory")]
         [Authorize(Roles = "admin")]
         public IActionResult DeleteCategory(int category_id)
         {
@@ -106,6 +116,6 @@ namespace ApelMusicAPI.Controllers
 
             if (result) return StatusCode(200);
             else return StatusCode(500, "Error Occur");
-        }
+        }*/
     }
 }

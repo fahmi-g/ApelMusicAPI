@@ -52,6 +52,7 @@ builder.Services.AddScoped<CheckoutStateData>();
 builder.Services.AddScoped<OrderData>();
 builder.Services.AddScoped<OrderDetailData>();
 builder.Services.AddScoped<PaymentMethodData>();
+builder.Services.AddScoped<AccountData>();
 builder.Services.AddTransient<EmailService>();
 
 builder.Services.AddCors();

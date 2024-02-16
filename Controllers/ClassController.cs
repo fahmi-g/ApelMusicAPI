@@ -59,6 +59,16 @@ namespace ApelMusicAPI.Controllers
             return StatusCode(200, classById);
         }
 
+        [HttpGet("GetActiveInactiveClass")]
+        public IActionResult GetActiveInactiveClassById(int id)
+        {
+            Class? classById = classData.GetActiveInactiveClassById(id);
+
+            if (classById == null) return StatusCode(404, "Data Not Found");
+
+            return StatusCode(200, classById);
+        }
+
         [HttpGet("GetClassesByCategory")]
         public IActionResult GetClassesByCategoryId(int category_id)
         {
@@ -131,7 +141,7 @@ namespace ApelMusicAPI.Controllers
             else return StatusCode(500, "Error Occur");
         }
 
-        [HttpDelete("DeleteClass")]
+        /*[HttpDelete("DeleteClass")]
         [Authorize(Roles = "admin")]
         public IActionResult DeleteClass(int class_id)
         {
@@ -139,6 +149,6 @@ namespace ApelMusicAPI.Controllers
 
             if (result) return StatusCode(200);
             else return StatusCode(500, "Error Occur");
-        }
+        }*/
     }
 }

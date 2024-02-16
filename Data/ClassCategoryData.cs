@@ -157,6 +157,56 @@ namespace ApelMusicAPI.Data
             return categoryById;
         }
 
+        //GetByID
+        public ClassCategory? GetActiveInactiveCategoryById(int category_id)
+        {
+            ClassCategory? categoryById = null;
+            string query = $"SELECT * FROM class_category WHERE category_id = @category_id";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@category_id", category_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                ClassCategory category = new ClassCategory
+                                {
+                                    categoryId = Convert.ToInt32(dataReader["category_id"]),
+                                    categoryImg = dataReader["category_img"].ToString(),
+                                    categoryName = dataReader["category_name"].ToString(),
+                                    categoryDescription = dataReader["category_description"].ToString(),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"])
+                                };
+
+                                categoryById = category;
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return categoryById;
+        }
+
         //Insert/Post
         public bool InsertNewCategory(ClassCategory newCategory)
         {

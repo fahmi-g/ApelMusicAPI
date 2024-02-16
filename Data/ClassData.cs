@@ -175,6 +175,63 @@ namespace ApelMusicAPI.Data
             return classById;
         }
 
+        //GetByID
+        public Class? GetActiveInactiveClassById(int class_id)
+        {
+            Class? classById = null;
+            string query = $"SELECT c.*, cc.category_name FROM class c " +
+                "JOIN class_category cc ON c.class_category = cc.category_id " +
+                $"WHERE c.class_id = @class_id";
+
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand command = new MySqlCommand())
+                {
+                    command.Connection = connection;
+                    command.Parameters.Clear();
+
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@class_id", class_id);
+
+                    try
+                    {
+                        connection.Open();
+
+                        using (MySqlDataReader dataReader = command.ExecuteReader())
+                        {
+                            while (dataReader.Read())
+                            {
+                                Class newClass = new Class
+                                {
+                                    classId = class_id,
+                                    classCategory = Convert.ToInt32(dataReader["class_category"]),
+                                    classImg = dataReader["class_img"].ToString(),
+                                    className = dataReader["class_name"].ToString() ?? string.Empty,
+                                    classDescription = dataReader["class_description"].ToString(),
+                                    classPrice = Convert.ToInt32(dataReader["class_price"]),
+                                    isActive = Convert.ToBoolean(dataReader["is_active"]),
+                                    categoryName = dataReader["category_name"].ToString() ?? string.Empty,
+                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty)
+                                };
+
+                                classById = newClass;
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+
+            return classById;
+        }
+
         //GetByCategoryId
         public List<Class> GetClassesByCategoryId(int category_id)
         {
