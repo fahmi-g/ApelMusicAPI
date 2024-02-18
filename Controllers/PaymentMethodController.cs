@@ -33,6 +33,7 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpGet("GetAllPaymentMethod")]
+        [Authorize(Roles = "admin")]
         public IActionResult GetAllPaymentMethod()
         {
             try
