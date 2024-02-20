@@ -119,7 +119,7 @@ namespace ApelMusicAPI.Data
         }
 
         //GetByID
-        public Class? GetById(int class_id)
+        public Class? GetById(int class_id, Guid user_id)
         {
             Class? classById = null;
             string query = $"SELECT c.*, cc.category_name FROM class c " +
@@ -154,7 +154,7 @@ namespace ApelMusicAPI.Data
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
                                     isActive = Convert.ToBoolean(dataReader["is_active"]),
                                     categoryName = dataReader["category_name"].ToString() ?? string.Empty,
-                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty)
+                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty, user_id)
                                 };
 
                                 classById = newClass;
@@ -176,7 +176,7 @@ namespace ApelMusicAPI.Data
         }
 
         //GetByID
-        public Class? GetActiveInactiveClassById(int class_id)
+        public Class? GetActiveInactiveClassById(int class_id, Guid user_id)
         {
             Class? classById = null;
             string query = $"SELECT c.*, cc.category_name FROM class c " +
@@ -211,7 +211,7 @@ namespace ApelMusicAPI.Data
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
                                     isActive = Convert.ToBoolean(dataReader["is_active"]),
                                     categoryName = dataReader["category_name"].ToString() ?? string.Empty,
-                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty)
+                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty, user_id)
                                 };
 
                                 classById = newClass;
@@ -233,7 +233,7 @@ namespace ApelMusicAPI.Data
         }
 
         //GetByCategoryId
-        public List<Class> GetClassesByCategoryId(int category_id)
+        public List<Class> GetClassesByCategoryId(int category_id, Guid user_id)
         {
             List<Class> classesByCateogryId = new List<Class>();
             string query = $"SELECT c.*, cc.category_name FROM class c " +
@@ -268,7 +268,7 @@ namespace ApelMusicAPI.Data
                                     classPrice = Convert.ToInt32(dataReader["class_price"]),
                                     isActive = Convert.ToBoolean(dataReader["is_active"]),
                                     categoryName = dataReader["category_name"].ToString() ?? string.Empty,
-                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty)
+                                    classSchedules = GetClassSchedules(dataReader["class_name"].ToString() ?? string.Empty, user_id)
                                 };
 
                                 classesByCateogryId.Add(newClass);
@@ -348,10 +348,10 @@ namespace ApelMusicAPI.Data
         }
 
         //GetClassSchedules
-        public List<ClassSchedules> GetClassSchedules(string class_name)
+        public List<ClassSchedules> GetClassSchedules(string class_name, Guid user_id)
         {
             List<ClassSchedules> classSchedules = new List<ClassSchedules>();
-            string query = $"SELECT * FROM class_schedules WHERE class_name = @class_name AND schedule_id NOT IN (SELECT schedule_id FROM user_classes)";
+            string query = $"SELECT * FROM class_schedules WHERE class_name = @class_name AND schedule_id NOT IN (SELECT schedule_id FROM user_classes WHERE user_id = @user_id)";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -362,6 +362,7 @@ namespace ApelMusicAPI.Data
 
                     command.CommandText = query;
                     command.Parameters.AddWithValue("@class_name", class_name);
+                    command.Parameters.AddWithValue("@user_id", user_id.ToString());
 
                     try
                     {

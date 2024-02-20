@@ -70,13 +70,12 @@ namespace ApelMusicAPI.Data
                 $"WHERE user_class_id = @user_class_id";
             string queryOrderTotalPrice = $"UPDATE orders " +
                 $"SET total_price = (" +
-                $"SELECT SUM(c.class_price) FROM orders o " +
-                $"JOIN order_detail od ON o.invoice_no = od.invoice_no " +
+                $"SELECT SUM(c.class_price) FROM order_detail od " +
                 $"JOIN user_classes uc ON od.user_class_id = uc.user_class_id " +
                 $"JOIN class c ON uc.class_id = c.class_id " +
-                $"WHERE o.order_by = @user_id " +
-                $"GROUP BY o.invoice_no " +
-                $"HAVING o.invoice_no = @invoice_no" +
+                $"WHERE uc.user_id = @user_id " +
+                $"GROUP BY od.invoice_no " +
+                $"HAVING od.invoice_no = @invoice_no" +
                 $") " +
                 $"WHERE invoice_no = @invoice_no";
 
@@ -161,13 +160,12 @@ namespace ApelMusicAPI.Data
                 $"WHERE user_class_id = @user_class_id";
             string queryOrderTotalPrice = $"UPDATE orders " +
                 $"SET total_price = (" +
-                $"SELECT SUM(c.class_price) FROM orders o " +
-                $"JOIN order_detail od ON o.invoice_no = od.invoice_no " +
+                $"SELECT SUM(c.class_price) FROM order_detail od " +
                 $"JOIN user_classes uc ON od.user_class_id = uc.user_class_id " +
                 $"JOIN class c ON uc.class_id = c.class_id " +
-                $"WHERE o.order_by = @user_id " +
-                $"GROUP BY o.invoice_no " +
-                $"HAVING o.invoice_no = @invoice_no" +
+                $"WHERE uc.user_id = @user_id " +
+                $"GROUP BY od.invoice_no " +
+                $"HAVING od.invoice_no = @invoice_no" +
                 $") " +
                 $"WHERE invoice_no = @invoice_no";
 

@@ -50,9 +50,9 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpGet("GetClass")]
-        public IActionResult GetClassById(int id)
+        public IActionResult GetClassById(int id, Guid user_id)
         {
-            Class? classById = classData.GetById(id);
+            Class? classById = classData.GetById(id, user_id);
 
             if (classById == null) return StatusCode(404, "Data Not Found");
 
@@ -60,9 +60,9 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpGet("GetActiveInactiveClass")]
-        public IActionResult GetActiveInactiveClassById(int id)
+        public IActionResult GetActiveInactiveClassById(int id, Guid user_id)
         {
-            Class? classById = classData.GetActiveInactiveClassById(id);
+            Class? classById = classData.GetActiveInactiveClassById(id, user_id);
 
             if (classById == null) return StatusCode(404, "Data Not Found");
 
@@ -70,9 +70,9 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpGet("GetClassesByCategory")]
-        public IActionResult GetClassesByCategoryId(int category_id)
+        public IActionResult GetClassesByCategoryId(int category_id, Guid user_id)
         {
-            List<Class> classByCategoryId = classData.GetClassesByCategoryId(category_id);
+            List<Class> classByCategoryId = classData.GetClassesByCategoryId(category_id, user_id);
 
             if (classByCategoryId == null) return StatusCode(404, "Data Not Found");
 
