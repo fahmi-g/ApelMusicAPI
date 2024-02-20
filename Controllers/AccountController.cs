@@ -49,27 +49,27 @@ namespace ApelMusicAPI.Controllers
         }
 
         [HttpPost("AddAccount")]
-        public IActionResult AddAccount([FromBody] User user)
+        public IActionResult AddAccount([FromBody] AddAccountDTO account)
         {
             try
             {
-                if (user.userEmail == userData.GetUserEmail(user.userEmail)) return Problem("The email is already used");
+                if (account.userEmail == userData.GetUserEmail(account.userEmail)) return Problem("The email is already used");
 
                 User newAccount = new User
                 {
                     userId = Guid.NewGuid(),
-                    userName = user.userName,
-                    userEmail = user.userEmail,
-                    userPassword = BCrypt.Net.BCrypt.HashPassword(user.userPassword),
-                    role = user.role,
-                    isActivated = user.isActivated
+                    userName = account.userName,
+                    userEmail = account.userEmail,
+                    userPassword = BCrypt.Net.BCrypt.HashPassword(account.userPassword),
+                    role = account.role,
+                    isActivated = account.isActivated
                 };
 
                 bool result = accountData.InsertAccount(newAccount);
 
                 if (result)
                 {
-                    return StatusCode(201, $"{user.userName}, your account has been added.");
+                    return StatusCode(201, $"{account.userName}, your account has been added.");
                 }
                 else
                 {

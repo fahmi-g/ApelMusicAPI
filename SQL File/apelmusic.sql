@@ -135,7 +135,8 @@ VALUES ("Kursus Drummer Special Coach (Eno Netral)", "2024-02-10"),
 	("Expert Level Saxophone", "2024-03-06");
 
 INSERT INTO user_roles (role_name)
-VALUES ("member");
+VALUES ("user"),
+	("admin");
 
 INSERT INTO payment_methods (payment_name, payment_img)
 VALUES ("DANA", "DANA.png"),
