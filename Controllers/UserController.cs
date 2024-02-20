@@ -12,6 +12,7 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.WebUtilities;
 using ApelMusicAPI.Email;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Net;
 
 namespace ApelMusicAPI.Controllers
 {
@@ -168,7 +169,7 @@ namespace ApelMusicAPI.Controllers
                 bool result = userData.ActivateUser(user_id);
 
                 if (result)
-                    return Ok("User activated");
+                    return Redirect("http://52.237.194.35:2025/confirm");
                 else
                     return StatusCode(500, "Activation Failed");
             }
