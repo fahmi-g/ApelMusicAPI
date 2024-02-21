@@ -20,7 +20,9 @@ namespace ApelMusicAPI.Data
         {
             List<ClassCategory> categories = new List<ClassCategory>();
 
-            string query = "SELECT * FROM class_category WHERE is_active = TRUE";
+            string query = "SELECT cc.category_id, cc.category_img, cc.category_name, cc.category_description, cc.is_active FROM class_category cc " +
+                "JOIN class c ON cc.category_id = c.class_category " +
+                "WHERE cc.is_active = TRUE";
 
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
